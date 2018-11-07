@@ -27,7 +27,7 @@ public class Palindrome {
         if (deque.isEmpty() || deque.size() == 1) {
             return true;
         }
-        if (cc.equalChars((char)deque.removeFirst(), (char)deque.removeLast())) {
+        if (cc.equalChars((char) deque.removeFirst(), (char) deque.removeLast())) {
             return isPalindrome(deque, cc);
         } else {
             return false;
@@ -39,9 +39,9 @@ public class Palindrome {
         return isPalindrome(deque, cc);
     }
 
-    public static void main(String[] args) {
-        OffByOne offByOne = new OffByOne();
-        Palindrome palindrome = new Palindrome();
-        palindrome.isPalindrome("flake", offByOne);
-    }
+//    public static void main(String[] args) {
+//        OffByOne offByOne = new OffByOne();
+//        Palindrome palindrome = new Palindrome();
+//        palindrome.isPalindrome("flake", offByOne);
+//    }
 }
