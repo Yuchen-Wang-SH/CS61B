@@ -118,11 +118,11 @@
 public class LinkedListDeque<T> {
     /* Circular topology */
     private class ItemNode {
-        public T item;
-        public ItemNode next;
-        public ItemNode previous;
+        private T item;
+        private ItemNode next;
+        private ItemNode previous;
 
-        public ItemNode (T item, ItemNode previous, ItemNode next) {
+        public ItemNode(T item, ItemNode previous, ItemNode next) {
             this.item = item;
             this.previous = previous;
             this.next = next;
@@ -162,7 +162,7 @@ public class LinkedListDeque<T> {
 
     public void printDeque() {
         ItemNode p = sentinel.next;
-        while(p != sentinel) {
+        while (p != sentinel) {
             System.out.print(p.item);
             p = p.next;
         }
@@ -175,7 +175,10 @@ public class LinkedListDeque<T> {
         node.previous.next = node.next;
         T t = node.item;
         node = null;
-        size--;
+        // Or removing from an empty list will cause negative size.
+        if (size != 0) {
+            size--;
+        }
         return t;
     }
 
@@ -186,12 +189,16 @@ public class LinkedListDeque<T> {
         node.next.previous = node.previous;
         T t = node.item;
         node = null;
-        size--;
+        if (size != 0) {
+            size--;
+        }
         return t;
     }
 
     public T get(int index) {
-        if (index >= size) return null;
+        if (index >= size) {
+            return null;
+        }
         ItemNode p = sentinel.next;
         while (index > 0) {
             p = p.next;
@@ -200,26 +207,32 @@ public class LinkedListDeque<T> {
         return p.item;
     }
 
-    private T getRecursive(ItemNode sentinel, int index) {
-        if (index == 0) return sentinel.next.item;
-        else return getRecursive(sentinel.next, index-1);
+    private T getRecursive(ItemNode sent, int index) {
+        if (index == 0) {
+            return sent.next.item;
+        }
+        else {
+            return getRecursive(sent.next, index - 1);
+        }
     }
 
     public T getRecursive(int index) {
-        if (index >= size) return null;
+        if (index >= size) {
+            return null;
+        }
         return getRecursive(sentinel, index);
     }
 
-    public static void main(String[] args) {
-        LinkedListDeque<Integer> l = new LinkedListDeque<>();
-        l.addFirst(1);
-        l.addLast(2);
-        l.addLast(3);
-        l.addFirst(0);
-        l.printDeque();
-        l.removeFirst();
-        l.removeLast();
-        System.out.println(l.get(1));
-        System.out.println(l.getRecursive(1));
-    }
+//    public static void main(String[] args) {
+//        LinkedListDeque<Integer> l = new LinkedListDeque<>();
+//        l.addFirst(1);
+//        l.addLast(2);
+//        l.addLast(3);
+//        l.addFirst(0);
+//        l.printDeque();
+//        l.removeFirst();
+//        l.removeLast();
+//        System.out.println(l.get(1));
+//        System.out.println(l.getRecursive(1));
+//    }
 }
