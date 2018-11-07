@@ -36,7 +36,7 @@ public class ArrayDeque<T> {
             pOld = increase(pOld);
         }
         nextFirst = result.length - 1;
-        nextLast = items.length;
+        nextLast = size;
         items = result;
     }
 
