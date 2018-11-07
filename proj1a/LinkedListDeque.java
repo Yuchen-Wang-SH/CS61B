@@ -210,8 +210,7 @@ public class LinkedListDeque<T> {
     private T getRecursive(ItemNode sent, int index) {
         if (index == 0) {
             return sent.next.item;
-        }
-        else {
+        } else {
             return getRecursive(sent.next, index - 1);
         }
     }

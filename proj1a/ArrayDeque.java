@@ -82,7 +82,7 @@ public class ArrayDeque<T> {
         size--;
         nextFirst = increase(nextFirst);
         T result =  items[nextFirst];
-        if (size < ratio * items.length){
+        if (size < ratio * items.length && items.length > 8) {
             resize(items.length / 2);
         }
         return result;
@@ -95,7 +95,7 @@ public class ArrayDeque<T> {
         size--;
         nextLast = decrease(nextLast);
         T result = items[nextLast];
-        if (size < ratio * items.length) {
+        if (size < ratio * items.length && items.length > 8) {
             resize(items.length / 2);
         }
         return result;
