@@ -71,7 +71,7 @@ public class ArrayDeque<T> {
         for (int i = 0; i < size; i++) {
             System.out.print(items[p]);
             System.out.print(' ');
-            p++;
+            p = increase(p);
         }
     }
 
@@ -115,19 +115,16 @@ public class ArrayDeque<T> {
 
 //    public static void main(String[] args) {
 //        ArrayDeque<Integer> l = new ArrayDeque<>();
-//        l.addFirst(0);
-//        l.addLast(1);
-//        l.addLast(2);
-//        l.addFirst(-1);
-//        for (int i = 3; i < 10; i++) {
-//            l.addLast(i);
+//        for (int i = 0; i < 50; i++) {
+//            l.addFirst(i);
+//        }
+//        for (int i = 0; i < 52; i++) {
+//            System.out.print(l.removeFirst());
+//            System.out.print(' ');
+//        }
+//        for (int i = 0; i < 50; i++) {
+//            l.addFirst(i);
 //        }
 //        l.printDeque();
-//        System.out.println();
-//        for (int i = 0; i < 8; i++) {
-//            l.removeLast();
-//        }
-//        l.printDeque();
-//        System.out.println(l.get(5));
 //    }
 }
