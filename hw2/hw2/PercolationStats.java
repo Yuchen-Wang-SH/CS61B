@@ -3,6 +3,8 @@ package hw2;
 import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 
+import java.util.Arrays;
+
 public class PercolationStats {
     private int N;
     private PercolationFactory pf;
@@ -30,7 +32,8 @@ public class PercolationStats {
             int[] site = randomSite();
             p.open(site[0], site[1]);
         }
-        return p.numberOfOpenSites() / (N * N);
+//        System.out.println("One trial!");
+        return (double) p.numberOfOpenSites() / (N * N);
     }
 
     private int[] randomSite() {
@@ -57,5 +60,14 @@ public class PercolationStats {
 
     public double confidenceHigh() {
         return highCon;
+    }
+
+    public static void main(String args[]) {
+        PercolationStats stats = new PercolationStats(5, 5, new PercolationFactory());
+//        for (int i = 0; i < 10; i++) System.out.println(Arrays.toString(stats.randomSite()));
+        System.out.println(stats.mean());
+        System.out.println(stats.stddev());
+        System.out.println(stats.confidenceHigh());
+        System.out.println(stats.confidenceLow());
     }
 }
