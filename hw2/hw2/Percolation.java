@@ -14,10 +14,11 @@ public class Percolation {
     private int UPPER;
 
     public Percolation(int N) {
+        if (N <= 0) throw new IllegalArgumentException("N should > 0");
         this.N = N;
         m = new boolean[N][N];
         // N*N is virtual upper node, N*N+1 lower.
-        disSet = new WeightedQuickUnionUF(N*N+1);
+        disSet = new WeightedQuickUnionUF(N * N + 1);
         UPPER = N * N;
         numOpened = 0;
         percolated = false;
@@ -33,6 +34,7 @@ public class Percolation {
 
 
     public void open(int row, int col) {
+        if (row < 0 || row > N -1 || col < 0 || col > N - 1) throw new IndexOutOfBoundsException("Invalid indexes!");
         if (!m[row][col]) {
             m[row][col] = true;
             numOpened++;
@@ -56,7 +58,7 @@ public class Percolation {
                 }
             }
 
-            if (row == N-1) {
+            if (row == N - 1) {
                 if (disSet.connected(xyTo1D(row, col), UPPER)) percolated = true;
             }
         }
@@ -79,7 +81,7 @@ public class Percolation {
             n[2][0] = row;
             n[2][1] = col + 1;
         }
-        if (col - 1 >=0) {
+        if (col - 1 >= 0) {
             n[3][0] = row;
             n[3][1] = col - 1;
         }
@@ -87,10 +89,12 @@ public class Percolation {
     }
 
     public boolean isOpen(int row, int col) {
+        if (row < 0 || row > N -1 || col < 0 || col > N - 1) throw new IndexOutOfBoundsException("Invalid indexes!");
         return m[row][col];
     }
 
     public boolean isFull(int row, int col) {
+        if (row < 0 || row > N -1 || col < 0 || col > N - 1) throw new IndexOutOfBoundsException("Invalid indexes!");
 //        // If any of the top layer ocean is connected to this position
 //        // then it is full.
 //        // And, it should be open to be full.
