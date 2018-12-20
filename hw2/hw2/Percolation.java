@@ -9,17 +9,18 @@ public class Percolation {
     private int N;
     private WeightedQuickUnionUF disSet;
     private int numOpened;
+    private boolean percolated;
 
-    private int UPPER, LOWER;
+    private int UPPER;
 
     public Percolation(int N) {
         this.N = N;
         m = new boolean[N][N];
         // N*N is virtual upper node, N*N+1 lower.
-        disSet = new WeightedQuickUnionUF(N*N+2);
+        disSet = new WeightedQuickUnionUF(N*N+1);
         UPPER = N * N;
-        LOWER = N * N + 1;
         numOpened = 0;
+        percolated = false;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) m[i][j] = false;
@@ -41,10 +42,10 @@ public class Percolation {
                 disSet.union(xyTo1D(row, col), UPPER);
             }
 
-            // If bottom layer, then connect it to LOWER.
-            if (row == N-1) {
-                disSet.union(xyTo1D(row, col), LOWER);
-            }
+//            // If bottom layer, then connect it to LOWER.
+//            if (row == N-1) {
+//                disSet.union(xyTo1D(row, col), LOWER);
+//            }
 
             // Connect with the opened holes of your neighbors.
             int[][] neighbors = neighbors(row, col);
@@ -53,6 +54,10 @@ public class Percolation {
                     if (!isOpen(neighbor[0], neighbor[1])) continue;
                     disSet.union(xyTo1D(row, col), xyTo1D(neighbor[0], neighbor[1]));
                 }
+            }
+
+            if (row == N-1) {
+                if (disSet.connected(xyTo1D(row, col), UPPER)) percolated = true;
             }
         }
     }
@@ -110,8 +115,9 @@ public class Percolation {
 //        }
 //        return false;
 
-        // You only have to check whether UPPER is connected to LOWER.
-        return disSet.connected(UPPER, LOWER);
+//        // You only have to check whether UPPER is connected to LOWER.
+//        return disSet.connected(UPPER, LOWER);
+        return percolated;
     }
 
     public static void main(String[] args) {
