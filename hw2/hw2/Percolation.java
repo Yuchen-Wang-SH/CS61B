@@ -2,6 +2,8 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+import java.util.Arrays;
+
 public class Percolation {
     private boolean[][] m;
     private int N;
@@ -23,12 +25,43 @@ public class Percolation {
         return row * N + col;
     }
 
+
     public void open(int row, int col) {
         if (!m[row][col]) {
             m[row][col] = true;
             numOpened++;
-            // Stuff about connect;
+            int[][] neighbors = neighbors(row, col);
+            for (int[] neighbor: neighbors) {
+                if (neighbor[0] != -1) {
+                    if (!isOpen(neighbor[0], neighbor[1])) continue;
+                    disSet.union(xyTo1D(row, col), xyTo1D(neighbor[0], neighbor[1]));
+                }
+            }
         }
+    }
+
+    private int[][] neighbors(int row, int col) {
+        // Return the (row, col) index of valid neighbors of (row, col).
+        // Invalid index will be （-1, -1).
+        int[][] n = new int[4][2];
+        for (int i = 0; i < 4; i++) Arrays.fill(n[i], -1);
+        if (row + 1 < N) {
+            n[0][0] = row + 1;
+            n[0][1] = col;
+        }
+        if (row - 1 >= 0) {
+            n[1][0] = row - 1;
+            n[1][1] = col;
+        }
+        if (col + 1 < N) {
+            n[2][0] = row;
+            n[2][1] = col + 1;
+        }
+        if (col - 1 >=0) {
+            n[3][0] = row;
+            n[3][1] = col - 1;
+        }
+        return n;
     }
 
     public boolean isOpen(int row, int col) {
@@ -56,5 +89,11 @@ public class Percolation {
             if (isFull(N-1, c)) return true;
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        Percolation p = new Percolation(10);
+        int[][] n = p.neighbors(9, 0);
+        for (int[] s: n) System.out.println(Arrays.toString(s));
     }
 }
