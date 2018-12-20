@@ -57,10 +57,6 @@ public class Percolation {
                     disSet.union(xyTo1D(row, col), xyTo1D(neighbor[0], neighbor[1]));
                 }
             }
-
-            if (row == N - 1) {
-                if (disSet.connected(xyTo1D(row, col), UPPER)) percolated = true;
-            }
         }
     }
 
@@ -121,6 +117,14 @@ public class Percolation {
 
 //        // You only have to check whether UPPER is connected to LOWER.
 //        return disSet.connected(UPPER, LOWER);
+        if (!percolated) {
+            for (int c = 0; c < N; c++) {
+                if (disSet.connected(xyTo1D(N-1, c), UPPER)) {
+                    percolated = true;
+                    break;
+                }
+            }
+        }
         return percolated;
     }
 
