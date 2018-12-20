@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 
-import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -27,9 +26,9 @@ public class TestSimpleOomage {
     public void testHashCodePerfect() {
         HashSet<SimpleOomage> set = new HashSet<>();
         int count = 0;
-        for (int r = 0; r < 255; r+=5) {
-            for (int g = 0; g < 255; g+=5) {
-                for (int b = 0; b < 255; b+=5) {
+        for (int r = 0; r < 255; r += 5) {
+            for (int g = 0; g < 255; g += 5) {
+                for (int b = 0; b < 255; b += 5) {
                     set.add(new SimpleOomage(r, g, b));
                     count++;
                 }
