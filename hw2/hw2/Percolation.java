@@ -7,19 +7,22 @@ import java.util.Arrays;
 public class Percolation {
     private boolean[][] m;
     private int N;
-    private WeightedQuickUnionUF disSet;
+    // disSetUp => isFull(), disSetUpLow => percolated
+    private WeightedQuickUnionUF disSetUp, disSetUpLow;
     private int numOpened;
     private boolean percolated;
 
-    private int UPPER;
+    private int UPPER, LOWER;
 
     public Percolation(int N) {
         if (N <= 0) throw new IllegalArgumentException("N should > 0");
         this.N = N;
         m = new boolean[N][N];
         // N*N is virtual upper node, N*N+1 lower.
-        disSet = new WeightedQuickUnionUF(N * N + 1);
+        disSetUp = new WeightedQuickUnionUF(N * N + 1);
+        disSetUpLow = new WeightedQuickUnionUF(N * N + 2);
         UPPER = N * N;
+        LOWER = N * N + 1;
         numOpened = 0;
         percolated = false;
 
@@ -41,20 +44,22 @@ public class Percolation {
 
             // If this is at the top layer, connect it to the virtual upper node.
             if (row == 0) {
-                disSet.union(xyTo1D(row, col), UPPER);
+                disSetUp.union(xyTo1D(row, col), UPPER);
+                disSetUpLow.union(xyTo1D(row, col), UPPER);
             }
 
-//            // If bottom layer, then connect it to LOWER.
-//            if (row == N-1) {
-//                disSet.union(xyTo1D(row, col), LOWER);
-//            }
+            // If bottom layer, then connect it to LOWER.
+            if (row == N-1) {
+                disSetUpLow.union(xyTo1D(row, col), LOWER);
+            }
 
             // Connect with the opened holes of your neighbors.
             int[][] neighbors = neighbors(row, col);
             for (int[] neighbor: neighbors) {
                 if (neighbor[0] != -1) {
                     if (!isOpen(neighbor[0], neighbor[1])) continue;
-                    disSet.union(xyTo1D(row, col), xyTo1D(neighbor[0], neighbor[1]));
+                    disSetUp.union(xyTo1D(row, col), xyTo1D(neighbor[0], neighbor[1]));
+                    disSetUpLow.union(xyTo1D(row, col), xyTo1D(neighbor[0], neighbor[1]));
                 }
             }
         }
@@ -96,12 +101,12 @@ public class Percolation {
 //        // And, it should be open to be full.
 //        if (!isOpen(row, col)) return false;
 //        for (int c = 0; c < N; c++) {
-//            if (disSet.connected(xyTo1D(row, col), xyTo1D(0, c))) return true;
+//            if (disSetUp.connected(xyTo1D(row, col), xyTo1D(0, c))) return true;
 //        }
 //        return false;
 
         // Only have to check whether this node is connected to the upper node.
-        return disSet.connected(xyTo1D(row, col), UPPER);
+        return disSetUp.connected(xyTo1D(row, col), UPPER);
     }
 
     public int numberOfOpenSites() {
@@ -116,16 +121,16 @@ public class Percolation {
 //        return false;
 
 //        // You only have to check whether UPPER is connected to LOWER.
-//        return disSet.connected(UPPER, LOWER);
-        if (!percolated) {
-            for (int c = 0; c < N; c++) {
-                if (disSet.connected(xyTo1D(N-1, c), UPPER)) {
-                    percolated = true;
-                    break;
-                }
-            }
-        }
-        return percolated;
+//        return disSetUp.connected(UPPER, LOWER);
+//        if (!percolated) {
+//            for (int c = 0; c < N; c++) {
+//                if (disSetUp.connected(xyTo1D(N-1, c), UPPER)) {
+//                    percolated = true;
+//                    break;
+//                }
+//            }
+//        }
+        return disSetUpLow.connected(UPPER, LOWER);
     }
 
     public static void main(String[] args) {
