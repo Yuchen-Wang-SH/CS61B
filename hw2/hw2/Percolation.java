@@ -10,10 +10,15 @@ public class Percolation {
     private WeightedQuickUnionUF disSet;
     private int numOpened;
 
+    private int UPPER, LOWER;
+
     public Percolation(int N) {
         this.N = N;
         m = new boolean[N][N];
-        disSet = new WeightedQuickUnionUF(N*N);
+        // N*N is virtual upper node, N*N+1 lower.
+        disSet = new WeightedQuickUnionUF(N*N+2);
+        UPPER = N * N;
+        LOWER = N * N + 1;
         numOpened = 0;
 
         for (int i = 0; i < N; i++) {
@@ -30,6 +35,18 @@ public class Percolation {
         if (!m[row][col]) {
             m[row][col] = true;
             numOpened++;
+
+            // If this is at the top layer, connect it to the virtual upper node.
+            if (row == 0) {
+                disSet.union(xyTo1D(row, col), UPPER);
+            }
+
+            // If bottom layer, then connect it to LOWER.
+            if (row == N-1) {
+                disSet.union(xyTo1D(row, col), LOWER);
+            }
+
+            // Connect with the opened holes of your neighbors.
             int[][] neighbors = neighbors(row, col);
             for (int[] neighbor: neighbors) {
                 if (neighbor[0] != -1) {
@@ -69,14 +86,17 @@ public class Percolation {
     }
 
     public boolean isFull(int row, int col) {
-        // If any of the top layer ocean is connected to this position
-        // then it is full.
-        // And, it should be open to be full.
-        if (!isOpen(row, col)) return false;
-        for (int c = 0; c < N; c++) {
-            if (disSet.connected(xyTo1D(row, col), xyTo1D(0, c))) return true;
-        }
-        return false;
+//        // If any of the top layer ocean is connected to this position
+//        // then it is full.
+//        // And, it should be open to be full.
+//        if (!isOpen(row, col)) return false;
+//        for (int c = 0; c < N; c++) {
+//            if (disSet.connected(xyTo1D(row, col), xyTo1D(0, c))) return true;
+//        }
+//        return false;
+
+        // Only have to check whether this node is connected to the upper node.
+        return disSet.connected(xyTo1D(row, col), UPPER);
     }
 
     public int numberOfOpenSites() {
@@ -85,10 +105,13 @@ public class Percolation {
 
     public boolean percolates() {
         // If any of the bottom layer is full, then percolated.
-        for (int c = 0; c < N; c++) {
-            if (isFull(N-1, c)) return true;
-        }
-        return false;
+//        for (int c = 0; c < N; c++) {
+//            if (isFull(N-1, c)) return true;
+//        }
+//        return false;
+
+        // You only have to check whether UPPER is connected to LOWER.
+        return disSet.connected(UPPER, LOWER);
     }
 
     public static void main(String[] args) {
