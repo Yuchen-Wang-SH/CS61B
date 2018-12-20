@@ -12,6 +12,8 @@ public class PercolationStats {
     private double mean, std, lowCon, highCon;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) throw new IllegalArgumentException("Illegal arguments!");
+
         this.N = N;
         this.pf = pf;
 
