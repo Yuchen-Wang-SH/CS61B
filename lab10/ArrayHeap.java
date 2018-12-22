@@ -1,4 +1,7 @@
 import org.junit.Test;
+
+import java.util.NoSuchElementException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -123,13 +126,20 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        int leftIn = leftIndex(index);
-        int rightIn = rightIndex(index);
-        if (!inBounds(leftIn) && !inBounds(rightIn))  { return; }
-        int smallest = min(min(index, leftIn), rightIn);
-        if (smallest != index) {
-            swap(index, smallest);
-            sink(smallest);
+//        int leftIn = leftIndex(index);
+//        int rightIn = rightIndex(index);
+//        if (!inBounds(leftIn) && !inBounds(rightIn))  { return; }
+//        int smallest = min(min(index, leftIn), rightIn);
+//        if (smallest != index) {
+//            swap(index, smallest);
+//            sink(smallest);
+//        }
+        while (2*index <= size) {
+            int j = 2*index;
+            if (j < size && contents[j].priority() > contents[j+1].priority()) j++;
+            if (!(contents[index].priority() > contents[j].priority())) break;
+            swap(index, j);
+            index = j;
         }
     }
 
@@ -168,11 +178,16 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+        if (size == 0)    throw new NoSuchElementException("Nothing to remove!");
         T result = contents[1].item();
-        contents[1] = contents[size];
-        contents[size] = null;
+        swap(1, size);
         size--;
         sink(1);
+        contents[size+1] = null;
+//        contents[1] = contents[size];
+//        contents[size] = null;
+//        size--;
+//        sink(1);
         return result;
     }
 
@@ -448,8 +463,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         pq.insert("i", 9);
         pq.insert("g", 7);
         pq.insert("d", 4);
-        pq.insert("a", 1);
-        pq.changePriority("d", 2);
+        pq.insert("a", 2);
+        pq.changePriority("d", 1);
         System.out.println(pq.toString());
     }
 }
