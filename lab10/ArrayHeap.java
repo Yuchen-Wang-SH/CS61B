@@ -104,11 +104,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        if (index == 1) { return; }
-        int parentIn = parentIndex(index);
-        if (min(index, parentIn) == index) {
-            swap(index, parentIn);
-            swim(parentIn);
+//        if (index == 1) { return; }
+//        int parentIn = parentIndex(index);
+//        if (min(index, parentIn) == index) {
+//            swap(index, parentIn);
+//            swim(parentIn);
+//        }
+        while (index > 1 && contents[index/2].priority() > contents[index].priority()) {
+            swap(index, parentIndex(index));
+            index = index / 2;
         }
     }
 
@@ -140,8 +144,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             resize(contents.length * 2);
         }
 
-        contents[size+1] = new Node(item, priority);
-        size++;
+        contents[++size] = new Node(item, priority);
         swim(size);
     }
 
@@ -197,6 +200,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             Node n = getNode(i);
             if (n.item().equals(item)) {
                 boolean getSmaller = (priority - n.priority() < 0) ? true : false;
+                n.myPriority = priority;
                 if (getSmaller) {
                     swim(i);
                 } else {
@@ -437,4 +441,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
     }
 
+    @Test
+    public void testChangePriority() {
+        ExtrinsicPQ<String> pq = new ArrayHeap<>();
+        pq.insert("c", 3);
+        pq.insert("i", 9);
+        pq.insert("g", 7);
+        pq.insert("d", 4);
+        pq.insert("a", 1);
+        pq.changePriority("d", 2);
+        System.out.println(pq.toString());
+    }
 }
