@@ -2,7 +2,6 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.Queue;
 
-import javax.swing.*;
 
 public class Board implements WorldState {
     private int[][] tiles;
@@ -25,7 +24,7 @@ public class Board implements WorldState {
 
     /**Returns value of tile at row i, column j (or 0 if blank)*/
     public int tileAt(int i, int j) {
-        if (i < 0 || i > size() -1 || j < 0 || j > size() - 1) {
+        if (i < 0 || i > size() - 1 || j < 0 || j > size() - 1) {
             throw new IndexOutOfBoundsException("Illegal i or j.");
         }
         return tiles[i][j];
@@ -154,7 +153,7 @@ public class Board implements WorldState {
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }

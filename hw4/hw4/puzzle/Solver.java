@@ -25,11 +25,6 @@ public class Solver {
                     } else if (!n.equals(s.getPrev().getW())) {
                         pq.insert(new SearchNode(n, s.getNumMove() + 1, s));
                     }
-
-
-//                    if (s.getPrev() == null || (s.getPrev() != null && n.equals(s.getPrev().getW()))) {
-//                        pq.insert(new SearchNode(n, s.getNumMove() + 1, s));
-//                    }
                 }
             }
         }
