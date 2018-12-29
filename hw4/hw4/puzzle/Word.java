@@ -1,5 +1,6 @@
 package hw4.puzzle;
 
+import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -10,6 +11,7 @@ public class Word implements WorldState {
     private static final String WORDFILE = "input/words10000.txt";
     private final String word;
     private final String goal;
+    private int distance;
 
     /**
      * Reads the wordfile specified by the wordfile variable.
@@ -42,6 +44,7 @@ public class Word implements WorldState {
 
         word = w;
         goal = g;
+        distance = -1;
     }
 
     /**
@@ -84,7 +87,10 @@ public class Word implements WorldState {
 
     @Override
     public int estimatedDistanceToGoal() {
-        return editDistance(this.word, goal);
+        if (distance == -1) {
+            distance = editDistance(this.word, goal);
+        }
+        return distance;
     }
 
     @Override
