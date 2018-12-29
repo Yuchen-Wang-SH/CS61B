@@ -35,15 +35,18 @@ public class MazeBreadthFirstPaths extends MazeExplorer {
         marked[v] = true;
         while(!q.isEmpty()) {
             int vertex = q.remove();
+            if (vertex == t) {
+                return;
+            }
             for (int n: maze.adj(vertex)) {
                 if (!marked[n]) {
                     marked[n] = true;
                     edgeTo[n] = vertex;
                     distTo[n] = distTo[vertex] + 1;
                     announce();
-                    if (n == t) {
-                        return;
-                    }
+//                    if (n == t) {
+//                        return;
+//                    }
                     q.add(n);
                 }
             }
