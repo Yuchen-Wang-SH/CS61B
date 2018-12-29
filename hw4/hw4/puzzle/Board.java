@@ -145,6 +145,11 @@ public class Board implements WorldState {
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        return tiles != null ? tiles.hashCode() : 0;
+    }
+
     /** Returns the string representation of the board. 
       * Uncomment this method. */
     public String toString() {
