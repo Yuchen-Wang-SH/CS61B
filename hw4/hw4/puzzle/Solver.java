@@ -1,7 +1,6 @@
 package hw4.puzzle;
 
 import edu.princeton.cs.algs4.MinPQ;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Solver {
     private int numMoves;
