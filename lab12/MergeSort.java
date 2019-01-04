@@ -35,7 +35,13 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
         // Your code here!
-        return null;
+        Queue<Queue<Item>> qOfQ = new Queue<>();
+        for (Item item : items) {
+            Queue<Item> q = new Queue<>();
+            q.enqueue(item);
+            qOfQ.enqueue(q);
+        }
+        return qOfQ;
     }
 
     /**
@@ -54,13 +60,46 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
         // Your code here!
-        return null;
+        Queue<Item> q = new Queue<>();
+        while (q1.size() != 0 || q2.size() != 0) {
+            q.enqueue(getMin(q1, q2));
+        }
+        return q;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
         // Your code here!
-        return items;
+        if (items.size() <= 1) {
+            return items;
+        } else if (items.size() == 2) {
+            Queue<Queue<Item>> qofQ = makeSingleItemQueues(items);
+            Queue<Item> q1 = qofQ.dequeue();
+            Queue<Item> q2 = qofQ.dequeue();
+            return mergeSortedQueues(q1, q2);
+        } else {
+            Queue<Item> lower = new Queue<>();
+            Queue<Item> upper = new Queue<>();
+            for (int i = 0; i < items.size() / 2; i++) {
+                lower.enqueue(items.dequeue());
+            }
+            while (items.size() != 0) {
+                upper.enqueue(items.dequeue());
+            }
+            return mergeSortedQueues(mergeSort(lower), mergeSort(upper));
+        }
+    }
+
+    public static void main(String[] args) {
+        Queue<String> q = new Queue<>();
+        q.enqueue("Baron");
+        q.enqueue("Candy");
+        q.enqueue("Aob");
+        q.enqueue("Eddie");
+        q.enqueue("Donkey");
+        System.out.println(q);
+        q = mergeSort(q);
+        System.out.println(q);
     }
 }
