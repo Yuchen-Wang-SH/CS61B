@@ -1,3 +1,4 @@
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,10 +43,30 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-        // System.out.println(params);
+        System.out.println(params);
         Map<String, Object> results = new HashMap<>();
         System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
                            + "your browser.");
+        /*
+            1. Check params for errors, such as null.
+            2. Verify the params are reasonable.
+                If:
+                    - box completely outside the map
+                    - the coordinates do not make sense
+                    Then: set `query_success` false, others arbitrary.
+            3. Decide the zooming level. Set it to `depth`.
+                a. ...
+            4. Calculate upper left and bottom right tile file name.
+            5. Get their coordinates and set `raster_xxx`.
+         */
+        if (params == null) {
+            throw new InvalidParameterException();
+        }
+        if (!QueryParamsChecker.isValid(params)) {
+            results.put("query_success", false);
+            return results;
+        }
+
         return results;
     }
 
